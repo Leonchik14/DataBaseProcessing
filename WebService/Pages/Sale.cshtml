@@ -1,0 +1,41 @@
+﻿@page
+@model WebService.Pages.SaleModel
+@{
+    ViewData["Title"] = "Sale Page";
+}
+
+<h1>Sale</h1>
+<h2>This page allows you to add Sale to DataBase and check the existing Sales</h2>
+<form class="form-control" method="post">    
+    <label>Buyer Id</label>
+    <input type= "number" min="0" required name="buyerid"/>
+    <label>Shop Id</label>
+    <input type= "number" min="0" required name="shopid"/>
+    <label>Good Id</label>
+    <input type="number" min="0" required name="goodid"/>
+    <label>Good Count</label>
+    <input type="number" min="1" required name="goodcount"/>
+    <input type="submit"/>
+</form>
+
+@if (SaleModel.MessageToUser != "")
+{
+    <h3 class="error">@SaleModel.MessageToUser</h3>
+    SaleModel.MessageToUser = "";
+}
+<table class="table">
+    @try
+    {
+            <tr><th>Id</th><th>Buyer Id</th><th>Shop Id</th><th>Good Id</th><th>Good Count</th></tr>
+        @foreach (var sale in Program.dataBase.GetTable<NewVariant.Models.Sale>())
+        {
+             <tr><td>@sale.Id</td><td>@sale.BuyerId</td><td>@sale.ShopId</td><td>@sale.GoodId</td><td>@sale.GoodCount</td></tr>
+        }
+
+    }
+    catch (NewVariant.Exceptions.DataBaseException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+</table>
+

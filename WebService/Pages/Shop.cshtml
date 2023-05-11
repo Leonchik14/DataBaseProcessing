@@ -1,0 +1,34 @@
+﻿@page
+@model WebService.Pages.ShopModel
+@{
+    ViewData["Title"] = "Shop Page";
+}
+
+<h1>Shop</h1>
+<h2>This page allows you to add Shop to DataBase and check the existing Shops</h2>
+<form class="form-control" method="post">    
+    <label>Name</label>
+    <input type= "text" required name="name"/>
+    <label>City</label>
+    <input type= "text" required name="city"/>
+    <label>Country</label>
+    <input type="text" required name="country"/>
+    <input type="submit"/>
+</form>
+
+<table class="table">
+    @try
+    {
+        <tr><th>Id</th><th>Name</th><th>City</th><th>Country</th></tr>
+        @foreach (var shop in Program.dataBase.GetTable<NewVariant.Models.Shop>())
+        {
+            <tr><td>@shop.Id</td><td>@shop.Name</td><td>@shop.City</td><td>@shop.Country</td></tr>
+        }
+
+    }
+    catch (NewVariant.Exceptions.DataBaseException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+</table>
+

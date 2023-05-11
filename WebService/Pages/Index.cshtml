@@ -1,0 +1,70 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <h2>This startpage allows you to serialize DataBase from your path and do requests.</h2>
+    <h2>You can see the tables and change them on the links at the navigation menu above!</h2>
+    <form class="serialization-container" method="post">
+    <label>Path:</label>
+    <input type="text" required name="path"/>
+    <div>
+    <input type="radio" value="shop" name="switchie" required>Shop</input>
+    <input type="radio" value="buyer" name="switchie" required>Buyer</input>
+    <input type="radio" value="good" name="switchie" required>Good</input>
+    <input type="radio" value="sale" name="switchie" required>Sale</input>
+    </div>
+    <input type="submit" class="btn-secondary" asp-page-handler="Serialize" value="Serialize"/>
+    <input type="submit" class="btn-secondary" asp-page-handler="Deserialize" value="Deserialize"/>
+    </form>
+    
+    @if (IndexModel.MessageToUser.Item1 != "")
+    {
+        @if (IndexModel.MessageToUser.Item2 == 'g')
+        {
+            <h3 class="good">@IndexModel.MessageToUser.Item1</h3>
+        }
+        @if(IndexModel.MessageToUser.Item2 == 'e')
+        {
+            <h3 class="error">@IndexModel.MessageToUser.Item1</h3>
+        }
+        @if(IndexModel.MessageToUser.Item2 == 'n')
+        {
+            <h3>@IndexModel.MessageToUser.Item1</h3>
+        }
+        IndexModel.MessageToUser = ("",'n');
+    }
+   
+
+
+    <b></b>
+    
+    <h2> Database reqests:</h2>
+    <form class="button-container" method="post">
+    <input type="submit" class="btn-secondary" asp-page-handler="GetAllGoodsOfLongestNameBuyer" value="Get all goods of longest name buyer" />
+    <input type="submit" class="btn-secondary" asp-page-handler="GetMostExpensiveGoodCategory" value="Get most expensive good category"/>
+    <input type="submit" class="btn-secondary" asp-page-handler="GetMinimumSalesCity" value="Get minimum sales city" />
+    <input type="submit" class="btn-secondary" asp-page-handler="GetMostPopularGoodBuyers" value="Get most popular good buyers" />
+    <input type="submit" class="btn-secondary" asp-page-handler="GetMinimumNumberOfShopsInCountry" value="Get minimum number of shops in country" />
+    <input type="submit" class="btn-secondary" asp-page-handler="GetOtherCitySales" value="Get other city sales" />
+    <input type="submit" class="btn-secondary" asp-page-handler="GetTotalSalesValue" value="Get total sales value" />
+    </form>
+    <h2>Result of request:</h2>
+    @if (Program.dataList.Count() == 0)
+    {
+        <h3 class="error">@IndexModel.ErrorMessage</h3>
+    }
+    else
+    {
+        @foreach(var obj in Program.dataList)
+        {
+            <p>@obj.ToString()</p>
+        }
+
+        Program.dataList = new List<Object>();
+    }
+
+</div>

@@ -1,0 +1,36 @@
+﻿@page
+@model WebService.Pages.BuyerModel
+@{
+    ViewData["Title"] = "Buyer Page";
+}
+
+<h1>Buyer</h1>
+<h2>This page allows you to add Buyer to DataBase and check the existing Buyers</h2>
+<form class="form-control" method="post">    
+    <label>Name</label>
+    <input type= "text" required name="name"/>
+    <label>Surname</label>
+    <input type= "text" required name="surname"/>
+    <label>City</label>
+    <input type="text" required name="city"/>
+    <label>Country</label>
+    <input type="text" required name="country"/>
+    <input type="submit"/>
+</form>
+
+
+<table class="table">
+    @try
+    {
+        <tr><th>Id</th><th>Name</th><th>Surname</th><th>City</th><th>Country</th></tr>
+        @foreach (var buyer in Program.dataBase.GetTable<NewVariant.Models.Buyer>())
+        {
+            <tr><td>@buyer.Id</td><td>@buyer.Name</td><td>@buyer.Surname</td><td>@buyer.City</td><td>@buyer.Country</td></tr>
+        }
+    }
+    catch (NewVariant.Exceptions.DataBaseException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+</table>
+
